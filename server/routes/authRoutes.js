@@ -10,4 +10,15 @@ module.exports = (app) => {
 
     // handle callback route
     app.get('/auth/google/callback', passport.authenticate('google'));
+
+    app.get('/api/logout', (req,res) => {
+        // destroys the session (cookie) that was created by Passport 
+        // logout() is a function from passport
+        req.logout();
+        res.send(req.user);
+    })
+
+    app.get('/api/current_user', (req,res) =>{
+        res.send(req.user);
+    })
 }
