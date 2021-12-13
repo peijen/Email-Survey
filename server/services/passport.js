@@ -29,24 +29,21 @@ passport.use(
         clientSecret: keys.googleClientSecret,
         callbackURL:"/auth/google/callback",
         proxy: true // tell google to trust heroku proxy server
-    }, (accessToken, refreshToken, profile, callback) => {
+    }, async (accessToken, refreshToken, profile, callback) => {
         
-        User.findOne({googleId: profile.id})
-          .then((existingUser) => {
-            // existingUser reperesents User.findOne({googleId: profile.id}) 
-            
-            if (existingUser){
-                // we already have a record with the given profile ID
-                console.log(`user id: ${profile.id} already exist in the db.`);
-                // notify passport that we are finished by callback function
-                callback(null, existingUser);
-            } else {
-                // we do not have a user record with this ID, make a new record
-                // new User is mongoose model instance (a record)
-                new User({googleId: profile.id})
-                .save()
-                .then((createdUser) => callback(null, createdUser));
-            }
-          })
+        const existingUser = await User.findOne({googleId: profile.id});
+ 
+        if (existingUser){
+            // we already have a record with the given profile ID
+            console.log(`user id: ${profile.id} already exist in the db.`);
+            // notify passport that we are finished by callback function
+            callback(null, existingUser);
+        } else {
+            // we do not have a user record with this ID, make a new record
+            // new User is mongoose model instance (a record)
+            const createdUser = await new User({googleId: profile.id}).save();
+            callback(null, createdUser);
+        }
+
     })
 );
