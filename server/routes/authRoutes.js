@@ -9,13 +9,21 @@ module.exports = (app) => {
     );
 
     // handle callback route
-    app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get(
+        '/auth/google/callback', 
+        passport.authenticate('google'),
+        (req, res) => {
+            // redirect users after users logged in successfully with google
+            res.redirect('/surveys');
+        }
+        );
 
     app.get('/api/logout', (req,res) => {
         // destroys the session (cookie) that was created by Passport 
         // logout() is a function from passport
         req.logout();
-        res.send(req.user);
+        // redirect users to landing page after logging out
+        res.redirect('/');
     })
 
     app.get('/api/current_user', (req,res) =>{
