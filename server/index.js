@@ -1,15 +1,20 @@
 const express = require('express');
 const keys = require('./config/keys');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 require('./models/User');
 require('./services/passport');
 const authRoutes = require('./routes/authRoutes');
+const billingRoutes = require('./routes/billingRoutes');
 
 mongoose.connect(keys.mongoURI);
 
 const app = express();
+
+// Parse incoming request bodies to json and store in req.body property.
+app.use(bodyParser.json());
 
 /* Enable cookies using cookie-session
 maxAge -> how long can cookie exist before it expires
@@ -23,12 +28,16 @@ app.use(
     })
 );
 
+
+
 // tell passport to make use of cookies to handle authentication
 app.use(passport.initialize());
 app.use(passport.session());
 
 // google oauth routes
 authRoutes(app);
+// stripe billing routes
+billingRoutes(app);
 
 /* dynamic port binding
 listen to port that is provided by third party platform

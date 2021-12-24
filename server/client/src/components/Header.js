@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
+import Payments from './Payments';
 class Header extends Component {
     renderContent(){
       //helper function for showing content based on user's authentication state
@@ -10,8 +11,13 @@ class Header extends Component {
         case false:
           return <li><a href="/auth/google">Login With Google</a></li>
         default:
-          return <li><a href="/api/logout">Logout</a></li>
-
+          return (
+                <Fragment>
+                  <li style={{margin: '0 50px'}}> Credits: { this.props.auth.credits }</li>
+                  <li><Payments /></li>
+                  <li><a href="/api/logout">Logout</a></li>
+                </Fragment>
+          )
       }
     }
     
@@ -19,7 +25,7 @@ class Header extends Component {
         return (
             <nav>
             <div className="nav-wrapper">
-              <a href="/" className="left brand-logo">Email-Survey</a>
+              <Link to={ this.props.auth ? "/surveys": "/" } className="left brand-logo">Email-Survey</Link>
               <ul className="right">
                   {this.renderContent()}
               </ul>
