@@ -29,7 +29,6 @@ app.use(
 );
 
 
-
 // tell passport to make use of cookies to handle authentication
 app.use(passport.initialize());
 app.use(passport.session());
@@ -38,6 +37,21 @@ app.use(passport.session());
 authRoutes(app);
 // stripe billing routes
 billingRoutes(app);
+
+if (process.env.NODE_ENV === 'production') {
+    // Express will serve up production assets
+    // main.js or main.css file
+    // if request is not found in express, look into client/build
+    app.use(express.static('client/build'));
+
+    // Express will serve up index.html file 
+    // if it does not recognize the requested route
+    const path = require('path');
+    app.get('*', (req,res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
+
 
 /* dynamic port binding
 listen to port that is provided by third party platform
