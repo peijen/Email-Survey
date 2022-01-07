@@ -33,3 +33,18 @@ export const handleStripeToken = (token) =>
             }
         );
     };
+
+export const submitSurvey = (values, history) => 
+    async function(dispatch) {
+        const res = await axios.post('/api/survey', values);
+        
+        // redirect user to surveys dashboard after they submitted their survey
+        history.push('/surveys');
+        // dispatch action will get sent to reducers
+        dispatch(
+            {
+                type: FETCH_USER, 
+                payload: res.data
+            }
+        )
+    };
