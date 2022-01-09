@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER } from './types';
+import { FETCH_USER, FETCH_SURVEYS } from './types';
 
 export const fetchUser = () => 
     // redux thunk
@@ -48,3 +48,17 @@ export const submitSurvey = (values, history) =>
             }
         )
     };
+
+export const fetchSurveys = () => 
+    async function(dispatch) {
+        const res = await axios.get('/api/survey');
+        
+        // dispatch action will get sent to reducers
+        dispatch(
+            {
+                type: FETCH_SURVEYS, 
+                payload: res.data
+            }
+        )
+    };
+
