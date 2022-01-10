@@ -22,35 +22,35 @@ When forking the repository, all database/API keys are removed from GitHub for s
 1. Git clone this repository: `https://github.com/peijen/Email-Survey.git`
 2. Run npm install to install all dependencies.
 3. Configure required keys for both server side and client side
-  - rename `Email-Survey/config/dev_example.js` to `dev.js`
-  - replace with proper api keys
-    ```
-    module.exports = {
-        googleClientID: "Your googleClientID",
-        googleClientSecret: "Your googleClientSecret",
-        mongoURI: "Your mongo database URI",
-        cookieKey: "any random letters",
-        stripePublishableKey: "Your stripe Public key",
-        stripeSecretKey: "Your stripe secret key",
-        sendGridKey:"Your SendGrid key",
-        redirectDomain: "http://localhost:3000",
-    }
-    ```
-   - `Email-Survey/client/.env.development`
-        ```
-        REACT_APP_STRIPE_PUB_KEY=Your_Stripe_Public_Key
-        ```
+    - rename `Email-Survey/config/dev_example.js` to `dev.js`
+    - replace with proper api keys
+      ```
+      module.exports = {
+          googleClientID: "Your googleClientID",
+          googleClientSecret: "Your googleClientSecret",
+          mongoURI: "Your mongo database URI",
+          cookieKey: "any random letters",
+          stripePublishableKey: "Your stripe Public key",
+          stripeSecretKey: "Your stripe secret key",
+          sendGridKey:"Your SendGrid key",
+          redirectDomain: "http://localhost:3000",
+      }
+      ```
+     - replace with proper api keys in `Email-Survey/client/.env.development`
+          ```
+          REACT_APP_STRIPE_PUB_KEY=Your_Stripe_Public_Key
+          ```
 
 4. Setup [ngrok](https://ngrok.com/) for passing incoming webhook data to localhost
-  - You will need to create an account for ngrok. (Feel free to use other tools)
-  - follow the setup & installation on ngrok 
-  - run `ngrok.exe http 5000` on a separate terminal and keep it on.
+    - You will need to create an account for ngrok. (Feel free to use other tools)
+    - follow the setup & installation on ngrok 
+    - run `ngrok.exe http 5000` on a separate terminal and keep it on.
 
 5. Setup SendGrid event webhook
-  - Settings -> Mail Settings -> Enable Event Webhook
-  - Enter `ngrok url` with webhook api to HTTP Post URL
-    - example: `https://xxxx-xxx-xxx-xxx-xxx.ngrok.io/api/survey/webhooks`
-  - Engagement data -> check the `Clicked` box only and save
+    - Settings -> Mail Settings -> Enable Event Webhook
+    - Enter `ngrok url` with webhook api to HTTP Post URL
+      - example: `https://xxxx-xxx-xxx-xxx-xxx.ngrok.io/api/survey/webhooks`
+    - Engagement data -> check the `Clicked` box only and save
 
 6. navigate into the server or `root` directory, and run `npm run dev`, to start both the client, and the express server concurrently.
 
